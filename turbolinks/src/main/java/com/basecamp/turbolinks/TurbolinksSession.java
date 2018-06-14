@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
@@ -33,9 +34,9 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     // ---------------------------------------------------
 
     boolean bridgeInjectionInProgress; // Ensures the bridge is only injected once
-    boolean coldBootInProgress;
+    public boolean coldBootInProgress;
     boolean restoreWithCachedSnapshot;
-    boolean turbolinksIsReady; // Script finished and TL fully instantiated
+    public boolean turbolinksIsReady; // Script finished and TL fully instantiated
     boolean screenshotsEnabled;
     boolean pullToRefreshEnabled;
     boolean webViewAttachedToNewParent;
@@ -52,6 +53,8 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     View progressIndicator;
 
     static volatile TurbolinksSession defaultInstance;
+
+    int turbolinksSessionId = new Random().nextInt();
 
     // ---------------------------------------------------
     // Final vars
@@ -710,6 +713,10 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     public void visitLocationWithAction(String location, String action) {
         this.location = location;
         runJavascript("webView.visitLocationWithActionAndRestorationIdentifier", TurbolinksHelper.encodeUrl(location), action, getRestorationIdentifierFromMap());
+    }
+
+    public int getTurbolinksSessionId() {
+        return turbolinksSessionId;
     }
 
     // ---------------------------------------------------
