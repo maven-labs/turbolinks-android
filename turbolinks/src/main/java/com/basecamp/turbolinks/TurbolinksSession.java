@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
     int progressIndicatorDelay;
     long previousOverrideTime;
     Activity activity;
+    Fragment fragment;
     HashMap<String, Object> javascriptInterfaces = new HashMap<>();
     HashMap<String, String> restorationIdentifierMap = new HashMap<>();
     String location;
@@ -231,6 +233,20 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
 
         return this;
     }
+
+
+    /**
+     * <p><b>REQUIRED</b> A Fragment implementation is required so that callbacks
+     * during the Turbolinks event lifecycle can be passed back to your app.</p>
+     *
+     * @param fragment Any class that implements an Android Fragment.
+     * @return The TurbolinksSession to continue the chained calls.
+     */
+    public TurbolinksSession fragment(Fragment fragment) {
+        this.fragment = fragment;
+        return this;
+    }
+
 
     /**
      * <p><b>REQUIRED</b> A {@link TurbolinksAdapter} implementation is required so that callbacks
@@ -722,7 +738,9 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @param value Restoration ID provided by Turbolinks.
      */
     private void addRestorationIdentifierToMap(String value) {
-        if (activity != null) {
+        if (fragment != null) {
+            restorationIdentifierMap.put(fragment.toString(), value);
+        } else if (activity != null) {
             restorationIdentifierMap.put(activity.toString(), value);
         }
     }
@@ -733,7 +751,11 @@ public class TurbolinksSession implements TurbolinksScrollUpCallback {
      * @return Restoration ID for the current activity.
      */
     private String getRestorationIdentifierFromMap() {
-        return restorationIdentifierMap.get(activity.toString());
+        if (fragment != null) {
+            return restorationIdentifierMap.get(fragment.toString());
+        } else {
+            return restorationIdentifierMap.get(activity.toString());
+        }
     }
 
     /**
