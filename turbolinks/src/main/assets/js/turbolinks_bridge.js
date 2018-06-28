@@ -20,31 +20,31 @@ TLWebView.prototype = {
     // -----------------------------------------------------------------------
 
     issueRequestForVisitWithIdentifier: function(identifier) {
-        if (identifier == this.currentVisit.identifier) {
+        if (this.currentVisit && identifier == this.currentVisit.identifier) {
             this.currentVisit.issueRequest()
         }
     },
 
     changeHistoryForVisitWithIdentifier: function(identifier) {
-        if (identifier == this.currentVisit.identifier) {
+        if (this.currentVisit && identifier == this.currentVisit.identifier) {
             this.currentVisit.changeHistory()
         }
     },
 
     loadCachedSnapshotForVisitWithIdentifier: function(identifier) {
-        if (identifier == this.currentVisit.identifier) {
+        if (this.currentVisit && identifier == this.currentVisit.identifier) {
             this.currentVisit.loadCachedSnapshot()
         }
     },
 
     loadResponseForVisitWithIdentifier: function(identifier) {
-        if (identifier == this.currentVisit.identifier) {
+        if (this.currentVisit && identifier == this.currentVisit.identifier) {
             this.currentVisit.loadResponse()
         }
     },
 
     cancelVisitWithIdentifier: function(identifier) {
-        if (identifier == this.currentVisit.identifier) {
+        if (this.currentVisit && identifier == this.currentVisit.identifier) {
             this.currentVisit.cancel()
         }
     },
