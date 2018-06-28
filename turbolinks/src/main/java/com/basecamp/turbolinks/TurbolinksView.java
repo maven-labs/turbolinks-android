@@ -158,7 +158,10 @@ public class TurbolinksView extends FrameLayout {
             TurbolinksView previousTurbolinksView = (TurbolinksView) previousRefreshLayout.getParent();
 
             if (screenshotsEnabled) previousTurbolinksView.screenshotView();
-            previousRefreshLayout.removeView(webView);
+
+            // REALLY need to use removeViewInLayout instead of removeView for some reason
+            //   to prevent java.lang.IndexOutOfBoundsException...
+            previousRefreshLayout.removeViewInLayout(webView);
         }
 
         // Set the webview background to match the container background

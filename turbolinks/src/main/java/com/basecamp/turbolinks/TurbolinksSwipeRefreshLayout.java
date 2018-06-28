@@ -38,7 +38,11 @@ class TurbolinksSwipeRefreshLayout extends SwipeRefreshLayout {
     @Override
     public boolean canChildScrollUp() {
         if (callback != null) { return callback.canChildScrollUp(); }
-        return super.canChildScrollUp();
+        try {
+            return super.canChildScrollUp();
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 
     /**
